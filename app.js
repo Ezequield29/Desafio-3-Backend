@@ -19,10 +19,15 @@ const productManager = new ProductManager('products.json');
 
 // Ruta para obtener todos los productos
 app.get('/products', (req, res) => {
+    const limit = req.query.limit; // Obtener el parámetro "limit" de la consulta
     const products = productManager.getProducts();
-    res.json(products);
+    if (limit) {
+        const limitedProducts = products.slice(0, limit); // Obtener solo los primeros "limit" productos
+        res.json(limitedProducts);
+    } else {
+        res.json(products); // Si no se especifica limit, devolver todos los productos
+    }
 });
-
 // Ruta para obtener un producto por su ID
 app.get('/products/:id', (req, res) => {
     const productId = parseInt(req.params.id);
